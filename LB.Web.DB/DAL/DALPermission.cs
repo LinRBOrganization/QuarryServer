@@ -95,6 +95,45 @@ where PermissionName=@PermissionName
             return dtReturn;
         }
 
+        public DataTable GetChildPermission(FactoryArgs args, t_BigID ParentPermissionID)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("ParentPermissionID", LBDbType.Int64, ParentPermissionID.Value));
+            string strSQL = @"
+select *
+from dbo.DbPermission
+where ParentPermissionID=@ParentPermissionID
+";
+            DataTable dtReturn = DBHelper.ExecuteQuery(args, strSQL, parms);
+            return dtReturn;
+        }
+
+        public DataTable GetPermissionData(FactoryArgs args, t_BigID PermissionID)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
+            string strSQL = @"
+select *
+from dbo.DbPermissionData
+where PermissionID=@PermissionID
+";
+            DataTable dtReturn = DBHelper.ExecuteQuery(args, strSQL, parms);
+            return dtReturn;
+        }
+
+        public DataTable GetPermissionDataByCode(FactoryArgs args, t_String PermissionCode)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
+            string strSQL = @"
+select *
+from dbo.DbPermissionData
+where rtrim(PermissionCode)=rtrim(@PermissionCode)
+";
+            DataTable dtReturn = DBHelper.ExecuteQuery(args, strSQL, parms);
+            return dtReturn;
+        }
+
         public void InsertPermission(FactoryArgs args, out t_BigID PermissionID, t_BigID ParentPermissionID, t_String PermissionName)
         {
             PermissionID = new t_BigID();
@@ -104,9 +143,9 @@ where PermissionName=@PermissionName
             parms.Add(new LBDbParameter("ParentPermissionID", LBDbType.Int64, ParentPermissionID.Value));
             string strSQL = @"
 insert into dbo.DbPermission( PermissionName, ParentPermissionID)
-values( @PermissionName, nullif(@ParentPermissionID,0))
+values( @PermissionName, @ParentPermissionID)
 
-set @PermissionID = @@PermissionID
+set @PermissionID = @@identity
 ";
             DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
             PermissionID.SetValueWithObject( parms["PermissionID"].Value);
@@ -119,9 +158,66 @@ set @PermissionID = @@PermissionID
             parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
             parms.Add(new LBDbParameter("PermissionName", LBDbType.String, PermissionName.Value));
             string strSQL = @"
-update into dbo.DbPermission
+update dbo.DbPermission
 set PermissionName = @PermissionName
 where PermissionID = @PermissionID
+";
+            DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
+        }
+
+        public void DeletePermission(FactoryArgs args, t_BigID PermissionID)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
+            string strSQL = @"
+delete dbo.DbPermission
+where PermissionID = @PermissionID
+";
+            DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
+        }
+
+        public void InsertPermissionData(FactoryArgs args, out t_BigID PermissionDataID, t_BigID PermissionID,
+            t_String PermissionCode, t_String PermissionDataName)
+        {
+            PermissionDataID = new t_BigID();
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("PermissionDataID", LBDbType.Int64, PermissionDataID.Value, true));
+            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
+            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
+            parms.Add(new LBDbParameter("PermissionDataName", LBDbType.String, PermissionDataName.Value));
+            string strSQL = @"
+insert into dbo.DbPermissionData(PermissionID, PermissionCode, PermissionDataName)
+values(@PermissionID, @PermissionCode, @PermissionDataName)
+
+set @PermissionDataID = @@identity
+";
+            DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
+            PermissionDataID.SetValueWithObject(parms["PermissionDataID"].Value);
+        }
+
+
+        public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, t_String PermissionDataName)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("PermissionDataID", LBDbType.Int64, PermissionDataID.Value));
+            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
+            parms.Add(new LBDbParameter("PermissionDataName", LBDbType.String, PermissionDataName.Value));
+            string strSQL = @"
+update dbo.DbPermissionData
+set PermissionCode = @PermissionCode,
+    PermissionDataName = @PermissionDataName
+where PermissionDataID = @PermissionDataID
+";
+            DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
+        }
+
+        public void DeletePermissionData(FactoryArgs args, t_BigID PermissionDataID)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("PermissionDataID", LBDbType.Int64, PermissionDataID.Value));
+            string strSQL = @"
+delete dbo.DbPermissionData
+where PermissionDataID = @PermissionDataID
 ";
             DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
         }

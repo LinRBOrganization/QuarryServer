@@ -11,7 +11,7 @@ namespace LB.Web.DB.DAL
     public class DALDBUser
     {
         public void Insert(FactoryArgs args, out t_BigID UserID, t_String LoginName, t_String UserPassword, t_String UserName,
-            t_ID UserType, t_String UserSex)
+            t_ID UserType, t_ID UserSex)
         {
             UserID = new t_BigID();
             LBDbParameterCollection parms = new LBDbParameterCollection();
@@ -20,7 +20,7 @@ namespace LB.Web.DB.DAL
             parms.Add(new LBDbParameter("UserPassword", LBDbType.String, UserPassword.Value));
             parms.Add(new LBDbParameter("UserName", LBDbType.String, UserName.Value));
             parms.Add(new LBDbParameter("UserType", LBDbType.Int32, UserType.Value));
-            parms.Add(new LBDbParameter("UserSex", LBDbType.String, UserSex.Value));
+            parms.Add(new LBDbParameter("UserSex", LBDbType.Int32, UserSex.Value));
             parms.Add(new LBDbParameter("ChangeBy", LBDbType.String, args.LoginName));
             parms.Add(new LBDbParameter("ChangeTime", LBDbType.DateTime, DateTime.Now));
 
@@ -35,7 +35,7 @@ set @UserID = @@identity
         }
 
         public void Update(FactoryArgs args, t_BigID UserID, t_String LoginName, t_String UserPassword, t_String UserName,
-            t_ID UserType, t_String UserSex)
+            t_ID UserType, t_ID UserSex)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
             parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value));
@@ -43,7 +43,7 @@ set @UserID = @@identity
             parms.Add(new LBDbParameter("UserPassword", LBDbType.String, UserPassword.Value));
             parms.Add(new LBDbParameter("UserName", LBDbType.String, UserName.Value));
             parms.Add(new LBDbParameter("UserType", LBDbType.Int32, UserType.Value));
-            parms.Add(new LBDbParameter("UserSex", LBDbType.String, UserSex.Value));
+            parms.Add(new LBDbParameter("UserSex", LBDbType.Int32, UserSex.Value));
             parms.Add(new LBDbParameter("ChangeBy", LBDbType.String, args.LoginName));
             parms.Add(new LBDbParameter("ChangeTime", LBDbType.DateTime, DateTime.Now));
 

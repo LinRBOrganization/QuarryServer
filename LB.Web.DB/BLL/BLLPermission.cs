@@ -35,6 +35,17 @@ namespace LB.Web.DB.BLL
                 case 11003:
                     strFunName = "DeletePermission";
                     break;
+
+                //DbPermissionData
+                case 11010:
+                    strFunName = "InsertPermissionData";
+                    break;
+                case 11011:
+                    strFunName = "UpdatePermissionData";
+                    break;
+                case 11012:
+                    strFunName = "DeletePermissionData";
+                    break;
             }
             return strFunName;
         }
@@ -67,7 +78,7 @@ namespace LB.Web.DB.BLL
                     {
                         if (dtExistsName.Rows.Count == 0)//不存在，可添加
                         {
-                            //_DALPermission.InsertPermission(args,out PermissionID,ParentPermissionID)
+                            _DALPermission.InsertPermission(args, out PermissionID, ParentPermissionID, PermissionName);
                         }
                         else
                         {
@@ -80,6 +91,115 @@ namespace LB.Web.DB.BLL
                     throw new Exception("上级权限分类不存在，无法在该权限分类下级添加权限分类！");
                 }
             }
+        }
+
+        public void UpdatePermission(FactoryArgs args, t_BigID PermissionID, t_String PermissionName, t_BigID ParentPermissionID)
+        {
+            using (DataTable dtPermission = _DALPermission.GetPermission(args, ParentPermissionID))
+            {
+                if (ParentPermissionID.Value == null || dtPermission.Rows.Count > 0)//校验上级权限组是否存在
+                {
+                    using (DataTable dtExistsName = _DALPermission.GetPermissionByName(args, PermissionName))
+                    {
+                        if (dtExistsName.Rows.Count == 0)//不存在，可添加
+                        {
+                            _DALPermission.UpdatePermission(args, PermissionID, PermissionName);
+                        }
+                        else
+                        {
+                            dtExistsName.DefaultView.RowFilter = "PermissionID<>" + PermissionID.Value;
+                            if (dtExistsName.DefaultView.Count == 0)
+                            {
+                                _DALPermission.UpdatePermission(args, PermissionID, PermissionName);
+                            }
+                            else
+                            {
+                                throw new Exception("当前权限分类名称已存在！");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("上级权限分类不存在，无法在该权限分类下级添加权限分类！");
+                }
+            }
+        }
+
+        public void DeletePermission(FactoryArgs args, t_BigID PermissionID)
+        {
+            using (DataTable dtPermission = _DALPermission.GetChildPermission(args, PermissionID))
+            {
+                if (dtPermission.Rows.Count > 0)
+                {
+                    throw new Exception("该权限分类存在子分类，无法删除！");
+                }
+            }
+
+            using (DataTable dtPermissionData = _DALPermission.GetPermissionData(args, PermissionID))
+            {
+                if (dtPermissionData.Rows.Count > 0)
+                {
+                    throw new Exception("该权限分类存在功能权限数据，无法删除！");
+                }
+            }
+            _DALPermission.DeletePermission(args, PermissionID);
+        }
+
+        public void InsertPermissionData(FactoryArgs args, out t_BigID PermissionDataID, t_BigID PermissionID, 
+            t_String PermissionCode, t_String PermissionDataName)
+        {
+            PermissionDataID = new t_BigID();
+            using (DataTable dtPermission = _DALPermission.GetPermission(args, PermissionID))
+            {
+                if (dtPermission.Rows.Count > 0)//校验上级权限组是否存在
+                {
+                    using (DataTable dtExistsName = _DALPermission.GetPermissionDataByCode(args, PermissionCode))
+                    {
+                        if (dtExistsName.Rows.Count == 0)//不存在，可添加
+                        {
+                            _DALPermission.InsertPermissionData(args, out PermissionDataID, PermissionID, PermissionCode, PermissionDataName);
+                        }
+                        else
+                        {
+                            throw new Exception("当前权限分类名称已存在！");
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("上级权限分类不存在，无法在该权限分类下级添加权限！");
+                }
+            }
+        }
+
+        public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, t_String PermissionDataName)
+        {
+            using (DataTable dtExistsName = _DALPermission.GetPermissionDataByCode(args, PermissionCode))
+            {
+                if (dtExistsName.Rows.Count == 0)//不存在，可添加
+                {
+                    _DALPermission.UpdatePermissionData(args, PermissionDataID, PermissionCode, PermissionDataName);
+                }
+                else
+                {
+                    dtExistsName.DefaultView.RowFilter = "PermissionDataID<>" + PermissionDataID.Value;
+                    if (dtExistsName.DefaultView.Count == 0)
+                    {
+                        _DALPermission.UpdatePermissionData(args, PermissionDataID, PermissionCode, PermissionDataName);
+                    }
+                    else
+                    {
+                        throw new Exception("当前权限分类名称已存在！");
+                    }
+                }
+            }
+        }
+
+        public void DeletePermissionData(FactoryArgs args, t_BigID PermissionDataID)
+        {
+            
+            _DALPermission.DeletePermissionData(args, PermissionDataID);
         }
     }
 }

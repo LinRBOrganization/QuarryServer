@@ -20,6 +20,12 @@ namespace LB.Web.Project.Factory
                     break;
 
                 case 11000:
+                case 11001:
+                case 11002:
+                case 11003:
+                case 11010:
+                case 11011:
+                case 11012:
                     return new BLLPermission();
                     break;
 

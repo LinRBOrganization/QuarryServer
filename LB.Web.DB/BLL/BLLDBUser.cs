@@ -44,7 +44,7 @@ namespace LB.Web.DB.BLL
 
         public void DBUser_Insert(FactoryArgs args, out t_BigID UserID,t_String LoginName, 
             t_String UserPassword, t_String UserName,
-            t_ID UserType, t_String UserSex)
+            t_ID UserType, t_ID UserSex)
         {
             UserID = new t_BigID();
 
@@ -60,7 +60,7 @@ namespace LB.Web.DB.BLL
         }
 
         public void DBUser_Update(FactoryArgs args, t_BigID UserID, t_String LoginName, t_String UserPassword, t_String UserName,
-            t_ID UserType, t_String UserSex)
+            t_ID UserType, t_ID UserSex)
         {
             using (DataTable dtUser = _DALDBUser.GetUserByLoginName(args, UserID, LoginName))
             {
