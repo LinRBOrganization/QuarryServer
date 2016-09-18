@@ -35,9 +35,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\BLLDbReportTemplate.cs" />
     <Compile Include="BLL\BLLDBUser.cs" />
     <Compile Include="BLL\BLLPermission.cs" />
     <Compile Include="BLL\BLLSysViewType.cs" />
+    <Compile Include="DAL\DALDbReportTemplate.cs" />
     <Compile Include="DAL\DALDBUser.cs" />
     <Compile Include="DAL\DALPermission.cs" />
     <Compile Include="DAL\DALSysViewType.cs" />

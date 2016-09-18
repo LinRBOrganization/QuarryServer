@@ -15,14 +15,14 @@ namespace LB.Web.DB.DAL
         {
             UserID = new t_BigID();
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value,true ));
-            parms.Add(new LBDbParameter("LoginName", LBDbType.String, LoginName.Value));
-            parms.Add(new LBDbParameter("UserPassword", LBDbType.String, UserPassword.Value));
-            parms.Add(new LBDbParameter("UserName", LBDbType.String, UserName.Value));
-            parms.Add(new LBDbParameter("UserType", LBDbType.Int32, UserType.Value));
-            parms.Add(new LBDbParameter("UserSex", LBDbType.Int32, UserSex.Value));
-            parms.Add(new LBDbParameter("ChangeBy", LBDbType.String, args.LoginName));
-            parms.Add(new LBDbParameter("ChangeTime", LBDbType.DateTime, DateTime.Now));
+            parms.Add(new LBDbParameter("UserID",  UserID,true ));
+            parms.Add(new LBDbParameter("LoginName",  LoginName));
+            parms.Add(new LBDbParameter("UserPassword",  UserPassword));
+            parms.Add(new LBDbParameter("UserName",  UserName));
+            parms.Add(new LBDbParameter("UserType", UserType));
+            parms.Add(new LBDbParameter("UserSex",  UserSex));
+            parms.Add(new LBDbParameter("ChangeBy", new t_String( args.LoginName)));
+            parms.Add(new LBDbParameter("ChangeTime", new t_DTSmall( DateTime.Now)));
 
             string strSQL = @"
 insert into dbo.DBUser( LoginName, UserPassword, ForbidLogin, IsManager, ChangeBy, ChangeTime, UserType, UserName, UserSex)
@@ -38,14 +38,14 @@ set @UserID = @@identity
             t_ID UserType, t_ID UserSex)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value));
-            parms.Add(new LBDbParameter("LoginName", LBDbType.String, LoginName.Value));
-            parms.Add(new LBDbParameter("UserPassword", LBDbType.String, UserPassword.Value));
-            parms.Add(new LBDbParameter("UserName", LBDbType.String, UserName.Value));
-            parms.Add(new LBDbParameter("UserType", LBDbType.Int32, UserType.Value));
-            parms.Add(new LBDbParameter("UserSex", LBDbType.Int32, UserSex.Value));
-            parms.Add(new LBDbParameter("ChangeBy", LBDbType.String, args.LoginName));
-            parms.Add(new LBDbParameter("ChangeTime", LBDbType.DateTime, DateTime.Now));
+            parms.Add(new LBDbParameter("UserID",  UserID));
+            parms.Add(new LBDbParameter("LoginName",  LoginName));
+            parms.Add(new LBDbParameter("UserPassword",  UserPassword));
+            parms.Add(new LBDbParameter("UserName",  UserName));
+            parms.Add(new LBDbParameter("UserType", UserType));
+            parms.Add(new LBDbParameter("UserSex",  UserSex));
+            parms.Add(new LBDbParameter("ChangeBy", new t_String(args.LoginName)));
+            parms.Add(new LBDbParameter("ChangeTime", new t_DTSmall(DateTime.Now)));
 
             string strSQL = @"
 update dbo.DBUser
@@ -66,7 +66,7 @@ where UserID = @UserID
         public void Delete(FactoryArgs args, t_BigID UserID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value));
+            parms.Add(new LBDbParameter("UserID", UserID));
 
             string strSQL = @"
 delete dbo.DBUser
@@ -78,8 +78,8 @@ where UserID = @UserID
         public DataTable GetUserByLoginName(FactoryArgs args, t_BigID UserID, t_String LoginName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value));
-            parms.Add(new LBDbParameter("LoginName", LBDbType.String, LoginName.Value));
+            parms.Add(new LBDbParameter("UserID",  UserID));
+            parms.Add(new LBDbParameter("LoginName",  LoginName));
             string strSQL = @"
 if @UserID = 0
 begin

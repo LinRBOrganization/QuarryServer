@@ -17,11 +17,11 @@ namespace LB.Web.DB.DAL
             PermissionName = new t_String();
             HasPermission = new t_Bool(1);
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value));
-            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
-            parms.Add(new LBDbParameter("PermissionDataName", LBDbType.String, PermissionDataName.Value, true));
-            parms.Add(new LBDbParameter("PermissionName", LBDbType.String, PermissionName.Value, true));
-            parms.Add(new LBDbParameter("HasPermission", LBDbType.Boolean, HasPermission.Value, true));
+            parms.Add(new LBDbParameter("UserID", UserID));
+            parms.Add(new LBDbParameter("PermissionCode",  PermissionCode));
+            parms.Add(new LBDbParameter("PermissionDataName", PermissionDataName, true));
+            parms.Add(new LBDbParameter("PermissionName",  PermissionName, true));
+            parms.Add(new LBDbParameter("HasPermission", HasPermission, true));
             string strSQL = @"
 select  p.PermissionDataName,
         isnull(d.HasPermission,0) as HasPermission,
@@ -53,8 +53,8 @@ where PermissionCode=@PermissionCode
             bool bolIsAdmin = false;
             int UserType=0;
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("UserID", LBDbType.Int64, UserID.Value));
-            parms.Add(new LBDbParameter("UserType", LBDbType.Int32, UserType,true));
+            parms.Add(new LBDbParameter("UserID",  UserID));
+            parms.Add(new LBDbParameter("UserType",new t_ID( UserType),true));
             string strSQL = @"
 select @UserType = UserType
 from dbo.DbUser
@@ -72,7 +72,7 @@ where UserID=@UserID
         public DataTable GetPermission(FactoryArgs args, t_BigID PermissionID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
+            parms.Add(new LBDbParameter("PermissionID", PermissionID));
             string strSQL = @"
 select *
 from dbo.DbPermission
@@ -85,7 +85,7 @@ where PermissionID=@PermissionID
         public DataTable GetPermissionByName(FactoryArgs args, t_String PermissionName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionName", LBDbType.String, PermissionName.Value));
+            parms.Add(new LBDbParameter("PermissionName",  PermissionName));
             string strSQL = @"
 select *
 from dbo.DbPermission
@@ -98,7 +98,7 @@ where PermissionName=@PermissionName
         public DataTable GetChildPermission(FactoryArgs args, t_BigID ParentPermissionID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("ParentPermissionID", LBDbType.Int64, ParentPermissionID.Value));
+            parms.Add(new LBDbParameter("ParentPermissionID", ParentPermissionID));
             string strSQL = @"
 select *
 from dbo.DbPermission
@@ -111,7 +111,7 @@ where ParentPermissionID=@ParentPermissionID
         public DataTable GetPermissionData(FactoryArgs args, t_BigID PermissionID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
+            parms.Add(new LBDbParameter("PermissionID", PermissionID));
             string strSQL = @"
 select *
 from dbo.DbPermissionData
@@ -124,7 +124,7 @@ where PermissionID=@PermissionID
         public DataTable GetPermissionDataByCode(FactoryArgs args, t_String PermissionCode)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
+            parms.Add(new LBDbParameter("PermissionCode",PermissionCode));
             string strSQL = @"
 select *
 from dbo.DbPermissionData
@@ -138,9 +138,9 @@ where rtrim(PermissionCode)=rtrim(@PermissionCode)
         {
             PermissionID = new t_BigID();
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value, true));
-            parms.Add(new LBDbParameter("PermissionName", LBDbType.String, PermissionName.Value));
-            parms.Add(new LBDbParameter("ParentPermissionID", LBDbType.Int64, ParentPermissionID.Value));
+            parms.Add(new LBDbParameter("PermissionID", PermissionID, true));
+            parms.Add(new LBDbParameter("PermissionName", PermissionName));
+            parms.Add(new LBDbParameter("ParentPermissionID", ParentPermissionID));
             string strSQL = @"
 insert into dbo.DbPermission( PermissionName, ParentPermissionID)
 values( @PermissionName, @ParentPermissionID)
@@ -155,8 +155,8 @@ set @PermissionID = @@identity
         public void UpdatePermission(FactoryArgs args, t_BigID PermissionID, t_String PermissionName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
-            parms.Add(new LBDbParameter("PermissionName", LBDbType.String, PermissionName.Value));
+            parms.Add(new LBDbParameter("PermissionID", PermissionID));
+            parms.Add(new LBDbParameter("PermissionName",PermissionName));
             string strSQL = @"
 update dbo.DbPermission
 set PermissionName = @PermissionName
@@ -168,7 +168,7 @@ where PermissionID = @PermissionID
         public void DeletePermission(FactoryArgs args, t_BigID PermissionID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
+            parms.Add(new LBDbParameter("PermissionID", PermissionID));
             string strSQL = @"
 delete dbo.DbPermission
 where PermissionID = @PermissionID
@@ -181,10 +181,10 @@ where PermissionID = @PermissionID
         {
             PermissionDataID = new t_BigID();
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionDataID", LBDbType.Int64, PermissionDataID.Value, true));
-            parms.Add(new LBDbParameter("PermissionID", LBDbType.Int64, PermissionID.Value));
-            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
-            parms.Add(new LBDbParameter("PermissionDataName", LBDbType.String, PermissionDataName.Value));
+            parms.Add(new LBDbParameter("PermissionDataID", PermissionDataID, true));
+            parms.Add(new LBDbParameter("PermissionID", PermissionID));
+            parms.Add(new LBDbParameter("PermissionCode", PermissionCode));
+            parms.Add(new LBDbParameter("PermissionDataName", PermissionDataName));
             string strSQL = @"
 insert into dbo.DbPermissionData(PermissionID, PermissionCode, PermissionDataName)
 values(@PermissionID, @PermissionCode, @PermissionDataName)
@@ -199,9 +199,9 @@ set @PermissionDataID = @@identity
         public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, t_String PermissionDataName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionDataID", LBDbType.Int64, PermissionDataID.Value));
-            parms.Add(new LBDbParameter("PermissionCode", LBDbType.String, PermissionCode.Value));
-            parms.Add(new LBDbParameter("PermissionDataName", LBDbType.String, PermissionDataName.Value));
+            parms.Add(new LBDbParameter("PermissionDataID",  PermissionDataID));
+            parms.Add(new LBDbParameter("PermissionCode", PermissionCode));
+            parms.Add(new LBDbParameter("PermissionDataName",  PermissionDataName));
             string strSQL = @"
 update dbo.DbPermissionData
 set PermissionCode = @PermissionCode,
@@ -214,7 +214,7 @@ where PermissionDataID = @PermissionDataID
         public void DeletePermissionData(FactoryArgs args, t_BigID PermissionDataID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("PermissionDataID", LBDbType.Int64, PermissionDataID.Value));
+            parms.Add(new LBDbParameter("PermissionDataID", PermissionDataID));
             string strSQL = @"
 delete dbo.DbPermissionData
 where PermissionDataID = @PermissionDataID

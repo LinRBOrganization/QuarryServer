@@ -17,7 +17,6 @@ namespace LB.Web.Project.Factory
                 case 10002:
                 case 10003:
                     return new BLLDBUser();
-                    break;
 
                 case 11000:
                 case 11001:
@@ -27,13 +26,16 @@ namespace LB.Web.Project.Factory
                 case 11011:
                 case 11012:
                     return new BLLPermission();
-                    break;
+
+                case 12000:
+                case 12001:
+                case 12002:
+                    return new BLLDbReportTemplate();
 
                 case 9000:
                 case 9001:
                 case 9002:
                     return new BLLSysViewType();
-                    break;
             }
 
             return null;

@@ -2,61 +2,50 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using LB.Web.Contants.DBType;
 
 namespace LB.Web.Base.Helper
 {
 	public class LBDbParameter : MarshalByRefObject
 	{
 		public string ParameterName;
-		public LBDbType LBDBType;
 		public ParameterDirection Direction;
-		public Object Value;
+        public string LBDBType;
+
+        public object Value;
 
 		public LBDbParameter()
 		{
 		}
 
-		public LBDbParameter( string parameterName, LBDbType dbtype,object value )
+		public LBDbParameter( string parameterName, ILBDbType value )
 		{
 			ParameterName = parameterName;
-            LBDBType = dbtype;
 			Direction = ParameterDirection.Input;
-			Value = value;
-		}
+			Value = value.Value;
+            LBDBType = value.GetType().ToString();
+        }
 
-		public LBDbParameter( string parameterName, LBDbType dbtype, object value, bool output )
+		public LBDbParameter( string parameterName, ILBDbType value, bool output )
 		{
 			ParameterName = parameterName;
-            LBDBType = dbtype;
 			Direction = ParameterDirection.InputOutput;
-			Value = value;
-		}
+			Value = value.Value;
+            LBDBType = value.GetType().ToString();
+        }
 
-		/*public DbParameter( string parameterName, string dbTypeName, ParameterDirection direction )
+		/*public void IsNullToEmptyOrZero()
 		{
-			ParameterName = parameterName;
-			DBTypeName = dbTypeName;
-			Direction = direction;
-		}
-
-		public DbParameter( string parameterName, string dbTypeName, ParameterDirection direction, Object value )
-		{
-			ParameterName = parameterName;
-			DBTypeName = dbTypeName;
-			Direction = direction;
-			Value = value;
-		}*/
-
-		public void IsNullToEmptyOrZero()
-		{
-			if( Value == DBNull.Value || Value == null )
+			if( Value.Value == DBNull.Value || Value == null )
 			{
-				switch(LBDBType)
+				switch(LBDBType.GetSqlDbType(Value.GetType().ToString()))
 				{
-					case LBDbType.String:
-                    case LBDbType.DateTime:
-                    case LBDbType.Date:
-                    case LBDbType.NText:
+					case SqlDbType.NText:
+                    case SqlDbType.DateTime:
+                    case SqlDbType.VarChar:
+                    case SqlDbType.SmallDateTime:
+                    case SqlDbType.NText:
+                    case SqlDbType.NText:
                         Value = "";
 						break;
 
@@ -98,6 +87,6 @@ namespace LB.Web.Base.Helper
 						break;
 				}
 			}
-		}
+		}*/
 	}
 }

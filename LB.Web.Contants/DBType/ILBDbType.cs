@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace LB.Web.Contants.DBType
@@ -35,6 +36,51 @@ namespace LB.Web.Contants.DBType
         public const string t_Image = "t_Image";
         public const string t_Table = "t_Table";
         public const string t_Object = "t_Object";
+
+        public static System.Data.SqlDbType GetSqlDbType( string strDbTypeName )
+		{
+			switch( strDbTypeName )
+			{
+				case LBDBType.t_BigID:
+					return System.Data.SqlDbType.BigInt;
+
+				case LBDBType.t_ID:
+                    return System.Data.SqlDbType.Int;
+
+                case LBDBType.t_String:
+                    return System.Data.SqlDbType.VarChar;
+
+                case LBDBType.t_nText:
+					return System.Data.SqlDbType.NText;
+
+                case LBDBType.t_Decimal:
+                    return System.Data.SqlDbType.Decimal;
+
+                case LBDBType.t_Float:
+					return System.Data.SqlDbType.Float;
+                    
+				case LBDBType.t_DTSmall:
+					return System.Data.SqlDbType.SmallDateTime;
+
+				case LBDBType.t_SmallID:
+					return System.Data.SqlDbType.SmallInt;
+
+				case LBDBType.t_Bool:
+					return System.Data.SqlDbType.TinyInt;
+
+				case LBDBType.t_Image:
+					return System.Data.SqlDbType.Image;
+
+                case LBDBType.t_Object:
+                    return System.Data.SqlDbType.NText;
+
+                case LBDBType.t_Byte:
+                    return System.Data.SqlDbType.TinyInt;
+
+                default:
+					return System.Data.SqlDbType.VarChar;
+			}
+		}
 
         public static ILBDbType GetILBDbType(string strDBTypeName)
         {
@@ -82,7 +128,62 @@ namespace LB.Web.Contants.DBType
             }
             return new t_String();
         }
-    }
+        
+        public static int GetSqlDbTypeSize(string strDBTypeName)
+        {
+            switch (strDBTypeName)
+            {
+                case LBDBType.t_String:
+                    return 2000;
+                case LBDBType.t_DTSmall:
+                    return 100;
+                case LBDBType.t_Float:
+                case LBDBType.t_Decimal:
+                    return 100;
+                case LBDBType.t_ID:
+                    return 100;
+                case LBDBType.t_BigID:
+                    return 100;
+                case LBDBType.t_Byte:
+                    return 10;
+                case LBDBType.t_Bool:
+                    return 1;
+                case LBDBType.t_Object:
+                    return 2000;
+                case LBDBType.t_nText:
+                    return 5;
+                default:
+                    return 2000;
+            }
+        }
 
-    
+        public static byte GetSqlDbTypePrecision(string strDBTypeName)
+        {
+            switch (strDBTypeName)
+            {
+                case LBDBType.t_BigID:
+                case LBDBType.t_Bool:
+                case LBDBType.t_Float:
+                case LBDBType.t_ID:
+                case LBDBType.t_Decimal:
+                case LBDBType.t_SmallID:
+                case LBDBType.t_Byte:
+                    return 10;
+                default:
+                    return 0;
+            }
+        }
+
+        public static byte GetSqlDbTypeScale(string strDBTypeName)
+        {
+            switch (strDBTypeName)
+            {
+                case LBDBType.t_Decimal:
+                case LBDBType.t_Float:
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
+    }
 }

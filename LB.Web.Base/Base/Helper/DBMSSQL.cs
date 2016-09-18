@@ -4,6 +4,7 @@ using System.Text;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
+using LB.Web.Contants.DBType;
 
 namespace LB.Web.Base.Helper
 {
@@ -29,19 +30,19 @@ namespace LB.Web.Base.Helper
 
 		DbParameter IDBBase.CreateParameter( LBDbParameter dbParm )
         {
-			int iScale = CommonHelper.GetSqlDbTypeScale( dbParm.LBDBType);
+			int iScale = LBDBType.GetSqlDbTypeScale( dbParm.LBDBType);
 			if( iScale < 0 )
 			{
 				iScale = 0;
 			}
 
 			return new SqlParameter(
-				"@" + dbParm.ParameterName, 
-				CommonHelper.GetSqlDbType( dbParm.LBDBType ),
-                CommonHelper.GetSqlDbTypeSize( dbParm.LBDBType),
+				"@" + dbParm.ParameterName,
+                LBDBType.GetSqlDbType( dbParm.LBDBType ),
+                LBDBType.GetSqlDbTypeSize( dbParm.LBDBType),
 				dbParm.Direction,
 				true,
-				CommonHelper.GetSqlDbTypePrecision( dbParm.LBDBType),
+                LBDBType.GetSqlDbTypePrecision( dbParm.LBDBType),
 				(byte)iScale,
 				"", 
 				DataRowVersion.Current,

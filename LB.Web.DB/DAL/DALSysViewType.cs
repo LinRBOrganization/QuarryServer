@@ -14,9 +14,9 @@ namespace LB.Web.DB.DAL
         {
             SysViewTypeID=new t_BigID();
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("SysViewTypeID", LBDbType.Int64, SysViewTypeID.Value, true));
-            parms.Add(new LBDbParameter("SysViewType", LBDbType.String, SysViewType.Value));
-            parms.Add(new LBDbParameter("SysViewName", LBDbType.String, SysViewName.Value));
+            parms.Add(new LBDbParameter("SysViewTypeID",  SysViewTypeID, true));
+            parms.Add(new LBDbParameter("SysViewType", SysViewType));
+            parms.Add(new LBDbParameter("SysViewName",  SysViewName));
 
             string strSQL = @"
 insert into dbo.SysViewType( SysViewType, SysViewName)
@@ -31,9 +31,9 @@ set @SysViewTypeID = @@identity
         public void Update(FactoryArgs args, t_BigID SysViewTypeID, t_String SysViewType, t_String SysViewName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("SysViewTypeID", LBDbType.Int64, SysViewTypeID.Value));
-            parms.Add(new LBDbParameter("SysViewType", LBDbType.String, SysViewType.Value));
-            parms.Add(new LBDbParameter("SysViewName", LBDbType.String, SysViewName.Value));
+            parms.Add(new LBDbParameter("SysViewTypeID", SysViewTypeID));
+            parms.Add(new LBDbParameter("SysViewType",  SysViewType));
+            parms.Add(new LBDbParameter("SysViewName", SysViewName));
 
             string strSQL = @"
 update dbo.SysViewType
@@ -47,7 +47,7 @@ where SysViewTypeID = @SysViewTypeID
         public void Delete(FactoryArgs args, t_BigID SysViewTypeID)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("SysViewTypeID", LBDbType.Int64, SysViewTypeID.Value));
+            parms.Add(new LBDbParameter("SysViewTypeID", SysViewTypeID));
 
             string strSQL = @"
 delete dbo.SysViewType
@@ -59,8 +59,8 @@ where SysViewTypeID = @SysViewTypeID
         public DataTable VerifyExists(FactoryArgs args, t_String SysViewType, t_String SysViewName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
-            parms.Add(new LBDbParameter("SysViewType", LBDbType.String, SysViewType.Value));
-            parms.Add(new LBDbParameter("SysViewName", LBDbType.String, SysViewName.Value));
+            parms.Add(new LBDbParameter("SysViewType",  SysViewType));
+            parms.Add(new LBDbParameter("SysViewName", SysViewName));
             string strSQL = @"
 select *
     from dbo.SysViewType
