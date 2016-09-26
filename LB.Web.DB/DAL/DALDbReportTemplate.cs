@@ -39,8 +39,8 @@ where rtrim(ReportTemplateName)=rtrim(@ReportTemplateName) and
             parms.Add(new LBDbParameter("TemplateData", TemplateData));
             parms.Add(new LBDbParameter("ReportTypeID",  ReportTypeID));
             string strSQL = @"
-insert into dbo.DbReportTemplate( ReportTemplateName, TemplateFileTime,TemplateSeq,Description,TemplateData,ReportTypeID)
-values( @ReportTemplateName, @TemplateFileTime,@TemplateSeq,@Description,@TemplateData,@ReportTypeID)
+insert into dbo.DbReportTemplate( ReportTemplateName,ReportTemplateNameExt, TemplateFileTime,TemplateSeq,Description,TemplateData,ReportTypeID)
+values( @ReportTemplateName,'.dxf', @TemplateFileTime,@TemplateSeq,@Description,@TemplateData,@ReportTypeID)
 
 set @ReportTemplateID = @@identity
 ";

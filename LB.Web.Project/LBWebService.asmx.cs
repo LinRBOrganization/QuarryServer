@@ -14,6 +14,7 @@ using System.Data.Common;
 using LB.Web.Contants.DBType;
 using LB.Web.Base.Factory;
 using LB.Web.Base.Helper;
+using System.IO;
 
 namespace LB.Web.Project
 {
@@ -390,6 +391,46 @@ from {1}
 
             //如果有返回值接收下
             method.Invoke(obj, new object[] { "小小" });
+        }
+
+        [WebMethod]
+        public bool ConnectServer()
+        {
+            return true;
+        }
+
+        [WebMethod]
+        public DataTable ReadClientFileInfo()
+        {
+            return ClientHelper.GetLocalFile();
+        }
+
+        [WebMethod]
+        public void ReadFileByte(string strFileFullName, int iPosition,int iMaxLength, out byte[] bSplitFile)
+        {
+            bSplitFile = null;
+            //int iMaxLength = 2048;//每次最大的下载长度
+            string strStartUp = Path.Combine(HttpRuntime.AppDomainAppPath, "bin\\Client");
+            string strFullName = Path.Combine(strStartUp, strFileFullName);
+            if (File.Exists(strFullName))
+            {
+                using (FileStream fileStream = new FileStream(strFullName, FileMode.Open, FileAccess.Read))
+                {
+                    fileStream.Seek(iPosition, SeekOrigin.Begin);
+
+                    if (fileStream.Length - iPosition > iMaxLength)
+                    {
+                        bSplitFile = new byte[iMaxLength];
+                    }
+                    else
+                    {
+                        bSplitFile = new byte[fileStream.Length - iPosition];
+                    }
+
+                    fileStream.Read(bSplitFile, 0, bSplitFile.Length);
+                    fileStream.Close();
+                }
+            }
         }
     }
 }

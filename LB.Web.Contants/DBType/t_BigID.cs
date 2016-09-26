@@ -56,6 +56,19 @@ namespace LB.Web.Contants.DBType
 			{
 				m_Value = (long)value;
 			}
+            else if (value.ToString() != "")
+            {
+                long lValue;
+                bool bolIsLong = long.TryParse(value.ToString(), out lValue);
+                if (bolIsLong)
+                {
+                    m_Value = lValue;
+                }
+                else
+                {
+                    throw new Exception("Value must be type of long.");
+                }
+            }
 			else
 			{
 				throw new Exception( "Value must be type of long." );

@@ -23,7 +23,7 @@ namespace LB.Web.Base.Helper
 			ParameterName = parameterName;
 			Direction = ParameterDirection.Input;
 			Value = value.Value;
-            LBDBType = value.GetType().ToString();
+            LBDBType = value.DBTypeName.ToString();
         }
 
 		public LBDbParameter( string parameterName, ILBDbType value, bool output )
