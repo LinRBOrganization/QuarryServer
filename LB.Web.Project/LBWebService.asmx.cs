@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Services;
 using LB.Web.Project.DBConnect;
 using LB.Web.Project.Factory;
-using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data.Common;
