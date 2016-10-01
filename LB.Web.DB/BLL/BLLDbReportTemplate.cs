@@ -73,7 +73,7 @@ namespace LB.Web.DB.BLL
                     {
                         throw new Exception("该报表名称已存在！");
                     }
-                    throw new Exception("该报表名称已存在！");
+                    
                 }
                 else
                 {

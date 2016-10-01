@@ -40,7 +40,7 @@ where rtrim(ReportTemplateName)=rtrim(@ReportTemplateName) and
             parms.Add(new LBDbParameter("ReportTypeID",  ReportTypeID));
             string strSQL = @"
 insert into dbo.DbReportTemplate( ReportTemplateName,ReportTemplateNameExt, TemplateFileTime,TemplateSeq,Description,TemplateData,ReportTypeID)
-values( @ReportTemplateName,'.dxf', @TemplateFileTime,@TemplateSeq,@Description,@TemplateData,@ReportTypeID)
+values( @ReportTemplateName,'.frx', @TemplateFileTime,@TemplateSeq,@Description,@TemplateData,@ReportTypeID)
 
 set @ReportTemplateID = @@identity
 ";
@@ -65,7 +65,7 @@ set ReportTemplateName = @ReportTemplateName,
     TemplateFileTime=@TemplateFileTime,
     TemplateSeq=@TemplateSeq,
     Description=@Description,
-    TemplateData=@TemplateData
+    TemplateData=isnull(@TemplateData,TemplateData)
 where ReportTemplateID = @ReportTemplateID
 
 ";
