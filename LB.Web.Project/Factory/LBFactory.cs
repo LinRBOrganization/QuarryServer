@@ -12,6 +12,10 @@ namespace LB.Web.Project.Factory
         {
             switch (iFunctionType)
             {
+                case 9000:
+                case 9001:
+                case 9002:
+                    return new BLLSysViewType();
                 case 10000:
                 case 10001:
                 case 10002:
@@ -32,10 +36,9 @@ namespace LB.Web.Project.Factory
                 case 12002:
                     return new BLLDbReportTemplate();
 
-                case 9000:
-                case 9001:
-                case 9002:
-                    return new BLLSysViewType();
+                case 13000:
+                case 13001:
+                    return new BLLDbSysLog();
             }
 
             return null;

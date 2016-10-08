@@ -137,6 +137,7 @@ where rtrim(PermissionCode)=rtrim(@PermissionCode)
         public void InsertPermission(FactoryArgs args, out t_BigID PermissionID, t_BigID ParentPermissionID, t_String PermissionName)
         {
             PermissionID = new t_BigID();
+            ParentPermissionID.NullIfZero();
             LBDbParameterCollection parms = new LBDbParameterCollection();
             parms.Add(new LBDbParameter("PermissionID", PermissionID, true));
             parms.Add(new LBDbParameter("PermissionName", PermissionName));
@@ -177,7 +178,8 @@ where PermissionID = @PermissionID
         }
 
         public void InsertPermissionData(FactoryArgs args, out t_BigID PermissionDataID, t_BigID PermissionID,
-            t_String PermissionCode, t_String PermissionDataName)
+            t_String PermissionCode, t_String PermissionDataName, t_SmallID PermissionType, t_ID PermissionSPType, 
+            t_ID PermissionViewType, t_String LogFieldName)
         {
             PermissionDataID = new t_BigID();
             LBDbParameterCollection parms = new LBDbParameterCollection();
@@ -185,9 +187,13 @@ where PermissionID = @PermissionID
             parms.Add(new LBDbParameter("PermissionID", PermissionID));
             parms.Add(new LBDbParameter("PermissionCode", PermissionCode));
             parms.Add(new LBDbParameter("PermissionDataName", PermissionDataName));
+            parms.Add(new LBDbParameter("PermissionType", PermissionType));
+            parms.Add(new LBDbParameter("PermissionSPType", PermissionSPType));
+            parms.Add(new LBDbParameter("PermissionViewType", PermissionViewType));
+            parms.Add(new LBDbParameter("LogFieldName", LogFieldName));
             string strSQL = @"
-insert into dbo.DbPermissionData(PermissionID, PermissionCode, PermissionDataName)
-values(@PermissionID, @PermissionCode, @PermissionDataName)
+insert into dbo.DbPermissionData(PermissionID, PermissionCode, PermissionDataName, PermissionType, PermissionSPType, PermissionViewType, LogFieldName)
+values(@PermissionID, @PermissionCode, @PermissionDataName, @PermissionType, @PermissionSPType,@PermissionViewType,@LogFieldName)
 
 set @PermissionDataID = @@identity
 ";
@@ -196,16 +202,25 @@ set @PermissionDataID = @@identity
         }
 
 
-        public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, t_String PermissionDataName)
+        public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, 
+            t_String PermissionDataName, t_SmallID PermissionType, t_ID PermissionSPType, t_ID PermissionViewType, t_String LogFieldName)
         {
             LBDbParameterCollection parms = new LBDbParameterCollection();
             parms.Add(new LBDbParameter("PermissionDataID",  PermissionDataID));
             parms.Add(new LBDbParameter("PermissionCode", PermissionCode));
             parms.Add(new LBDbParameter("PermissionDataName",  PermissionDataName));
+            parms.Add(new LBDbParameter("PermissionType", PermissionType));
+            parms.Add(new LBDbParameter("PermissionSPType", PermissionSPType));
+            parms.Add(new LBDbParameter("PermissionViewType", PermissionViewType));
+            parms.Add(new LBDbParameter("LogFieldName", LogFieldName));
             string strSQL = @"
 update dbo.DbPermissionData
 set PermissionCode = @PermissionCode,
-    PermissionDataName = @PermissionDataName
+    PermissionDataName = @PermissionDataName,
+    PermissionType = @PermissionType,
+    PermissionSPType = @PermissionSPType,
+    LogFieldName = @LogFieldName,
+    PermissionViewType = @PermissionViewType
 where PermissionDataID = @PermissionDataID
 ";
             DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);

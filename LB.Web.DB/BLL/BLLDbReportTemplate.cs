@@ -38,7 +38,9 @@ namespace LB.Web.DB.BLL
 
         public void Insert(FactoryArgs args, 
             out t_BigID ReportTemplateID,t_String ReportTemplateName,t_DTSmall TemplateFileTime,t_ID TemplateSeq,
-            t_String Description,t_Image TemplateData, t_BigID ReportTypeID)
+            t_String Description,t_Image TemplateData, t_BigID ReportTypeID,
+            t_String PrinterName, t_String MachineName,t_Bool IsManualPaperType, t_String PaperType, t_Bool IsManualPaperSize, 
+            t_ID PaperSizeHeight, t_ID PaperSizeWidth, t_Bool IsPaperTransverse)
         {
             ReportTemplateID = new t_BigID();
 
@@ -51,14 +53,18 @@ namespace LB.Web.DB.BLL
                 else
                 {
                     _DALDbReportTemplate.Insert(args, out ReportTemplateID, ReportTemplateName,
-                        TemplateFileTime, TemplateSeq, Description, TemplateData, ReportTypeID);
+                        TemplateFileTime, TemplateSeq, Description, TemplateData, ReportTypeID,
+                        PrinterName, MachineName, IsManualPaperType, PaperType, IsManualPaperSize,
+                        PaperSizeHeight, PaperSizeWidth, IsPaperTransverse);
                 }
             }
         }
 
         public void Update(FactoryArgs args,
            t_BigID ReportTemplateID, t_String ReportTemplateName, t_DTSmall TemplateFileTime, t_ID TemplateSeq,
-           t_String Description, t_Image TemplateData, t_BigID ReportTypeID)
+           t_String Description, t_Image TemplateData, t_BigID ReportTypeID,
+            t_String PrinterName, t_String MachineName, t_Bool IsManualPaperType, t_String PaperType, t_Bool IsManualPaperSize,
+            t_ID PaperSizeHeight, t_ID PaperSizeWidth, t_Bool IsPaperTransverse)
         {
             using (DataTable dtExistsName = _DALDbReportTemplate.ExistsTemplateName(args, ReportTemplateName, ReportTypeID))
             {
@@ -67,7 +73,9 @@ namespace LB.Web.DB.BLL
                     dtExistsName.DefaultView.RowFilter = "ReportTemplateID<>" + ReportTemplateID.Value;
                     if (dtExistsName.DefaultView.Count == 0)
                     {
-                        _DALDbReportTemplate.Update(args, ReportTemplateID, ReportTemplateName, TemplateFileTime, TemplateSeq, Description, TemplateData);
+                        _DALDbReportTemplate.Update(args, ReportTemplateID, ReportTemplateName, TemplateFileTime, TemplateSeq, Description, TemplateData,
+                        PrinterName, MachineName, IsManualPaperType, PaperType, IsManualPaperSize,
+                        PaperSizeHeight, PaperSizeWidth, IsPaperTransverse);
                     }
                     else
                     {
@@ -77,7 +85,9 @@ namespace LB.Web.DB.BLL
                 }
                 else
                 {
-                    _DALDbReportTemplate.Update(args, ReportTemplateID, ReportTemplateName, TemplateFileTime, TemplateSeq, Description, TemplateData);
+                    _DALDbReportTemplate.Update(args, ReportTemplateID, ReportTemplateName, TemplateFileTime, TemplateSeq, Description, TemplateData,
+                        PrinterName, MachineName, IsManualPaperType, PaperType, IsManualPaperSize,
+                        PaperSizeHeight, PaperSizeWidth, IsPaperTransverse);
                 }
             }
         }

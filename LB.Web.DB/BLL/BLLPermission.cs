@@ -67,7 +67,8 @@ namespace LB.Web.DB.BLL
             }
         }
 
-        public void InsertPermission(FactoryArgs args,out t_BigID PermissionID, t_String PermissionName, t_BigID ParentPermissionID)
+        public void InsertPermission(FactoryArgs args,out t_BigID PermissionID, t_String PermissionName, 
+            t_BigID ParentPermissionID)
         {
             PermissionID =new t_BigID();
             using (DataTable dtPermission = _DALPermission.GetPermission(args, ParentPermissionID))
@@ -93,7 +94,8 @@ namespace LB.Web.DB.BLL
             }
         }
 
-        public void UpdatePermission(FactoryArgs args, t_BigID PermissionID, t_String PermissionName, t_BigID ParentPermissionID)
+        public void UpdatePermission(FactoryArgs args, t_BigID PermissionID, t_String PermissionName, 
+            t_BigID ParentPermissionID)
         {
             using (DataTable dtPermission = _DALPermission.GetPermission(args, ParentPermissionID))
             {
@@ -147,7 +149,8 @@ namespace LB.Web.DB.BLL
         }
 
         public void InsertPermissionData(FactoryArgs args, out t_BigID PermissionDataID, t_BigID PermissionID, 
-            t_String PermissionCode, t_String PermissionDataName)
+            t_String PermissionCode, t_String PermissionDataName, t_SmallID PermissionType,t_ID PermissionSPType,
+            t_ID PermissionViewType, t_String LogFieldName)
         {
             PermissionDataID = new t_BigID();
             using (DataTable dtPermission = _DALPermission.GetPermission(args, PermissionID))
@@ -158,7 +161,8 @@ namespace LB.Web.DB.BLL
                     {
                         if (dtExistsName.Rows.Count == 0)//不存在，可添加
                         {
-                            _DALPermission.InsertPermissionData(args, out PermissionDataID, PermissionID, PermissionCode, PermissionDataName);
+                            _DALPermission.InsertPermissionData(args, out PermissionDataID, PermissionID, 
+                                PermissionCode, PermissionDataName, PermissionType, PermissionSPType, PermissionViewType, LogFieldName);
                         }
                         else
                         {
@@ -173,20 +177,21 @@ namespace LB.Web.DB.BLL
             }
         }
 
-        public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, t_String PermissionDataName)
+        public void UpdatePermissionData(FactoryArgs args, t_BigID PermissionDataID, t_String PermissionCode, 
+            t_String PermissionDataName, t_SmallID PermissionType, t_ID PermissionSPType, t_ID PermissionViewType, t_String LogFieldName)
         {
             using (DataTable dtExistsName = _DALPermission.GetPermissionDataByCode(args, PermissionCode))
             {
                 if (dtExistsName.Rows.Count == 0)//不存在，可添加
                 {
-                    _DALPermission.UpdatePermissionData(args, PermissionDataID, PermissionCode, PermissionDataName);
+                    _DALPermission.UpdatePermissionData(args, PermissionDataID, PermissionCode, PermissionDataName, PermissionType, PermissionSPType, PermissionViewType, LogFieldName);
                 }
                 else
                 {
                     dtExistsName.DefaultView.RowFilter = "PermissionDataID<>" + PermissionDataID.Value;
                     if (dtExistsName.DefaultView.Count == 0)
                     {
-                        _DALPermission.UpdatePermissionData(args, PermissionDataID, PermissionCode, PermissionDataName);
+                        _DALPermission.UpdatePermissionData(args, PermissionDataID, PermissionCode, PermissionDataName, PermissionType, PermissionSPType, PermissionViewType, LogFieldName);
                     }
                     else
                     {
