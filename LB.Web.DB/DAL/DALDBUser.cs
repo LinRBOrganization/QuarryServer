@@ -50,7 +50,7 @@ set @UserID = @@identity
             string strSQL = @"
 update dbo.DBUser
 set LoginName=@LoginName, 
-    UserPassword=@UserPassword, 
+    --UserPassword=@UserPassword, 
     ForbidLogin=0, 
     ChangeBy=@ChangeBy, 
     ChangeTime=@ChangeTime, 
@@ -70,6 +70,20 @@ where UserID = @UserID
 
             string strSQL = @"
 delete dbo.DBUser
+where UserID = @UserID
+";
+            DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
+        }
+
+        public void ChangePassword(FactoryArgs args, t_BigID UserID, t_String UserPassword)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("UserID", UserID));
+            parms.Add(new LBDbParameter("UserPassword", UserPassword));
+
+            string strSQL = @"
+update dbo.DBUser
+set UserPassword = @UserPassword
 where UserID = @UserID
 ";
             DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);

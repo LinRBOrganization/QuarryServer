@@ -23,24 +23,34 @@ namespace LB.Web.DB.DAL
             parms.Add(new LBDbParameter("PermissionName",  PermissionName, true));
             parms.Add(new LBDbParameter("HasPermission", HasPermission, true));
             string strSQL = @"
-select  p.PermissionDataName,
-        isnull(d.HasPermission,0) as HasPermission,
-        s.PermissionName
-from dbo.DbPermissionData p
-	inner join dbo.DbPermission s on
-		s.PermissionID = p.PermissionID
-	left outer join dbo.DbUserPermission d on
-		p.PermissionDataID = d.PermissionDataID and
-        d.UserID = @UserID
-where PermissionCode=@PermissionCode
+declare @PermissionID   bigint
+declare @PermissionDataID   bigint
+
+set @HasPermission = 0
+
+select top 1 @PermissionID = d.PermissionID,@PermissionDataName = d.PermissionDataName,
+    @PermissionName = p.PermissionName,@PermissionDataID = d.PermissionDataID
+from dbo.DbPermissionData d
+    inner join dbo.DbPermission p on
+       p.PermissionID = d.PermissionID
+where PermissionCode= @PermissionCode
+
+select @HasPermission = isnull(HasPermission,0)
+from dbo.DbUserPermission p
+where PermissionID = @PermissionID and UserID = @UserID
+
+if @HasPermission = 0
+begin
+    select @HasPermission = isnull(HasPermission,0)
+    from dbo.DbUserPermissionData
+    where PermissionDataID=@PermissionDataID and UserID = @UserID
+end
+
 ";
-            DataTable dtReturn = DBHelper.ExecuteQuery(args, strSQL, parms);
-            if (dtReturn.Rows.Count > 0)
-            {
-                PermissionDataName.Value = dtReturn.Rows[0]["PermissionDataName"].ToString();
-                PermissionName.Value = dtReturn.Rows[0]["PermissionName"].ToString();
-                HasPermission.Value = dtReturn.Rows[0]["HasPermission"].ToString() == "1" ? (byte)1 : (byte)0;
-            }
+            DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
+            PermissionDataName.SetValueWithObject(parms["PermissionDataName"].Value);
+            PermissionName.SetValueWithObject(parms["PermissionName"].Value);
+            HasPermission.SetValueWithObject(Convert.ToByte( parms["HasPermission"].Value ));
         }
 
         /// <summary>

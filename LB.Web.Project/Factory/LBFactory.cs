@@ -39,6 +39,16 @@ namespace LB.Web.Project.Factory
                 case 13000:
                 case 13001:
                     return new BLLDbSysLog();
+
+                case 13100:
+                case 13101:
+                case 13102:
+                    return new BLLUserPermission();
+
+                case 13200:
+                case 13201:
+                case 13202:
+                    return new BLLDbBackUpConfig();
             }
 
             return null;

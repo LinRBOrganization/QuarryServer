@@ -78,7 +78,10 @@ namespace LB.Web.DB.BLL
             _DALDBUser.Delete(args, UserID);
         }
 
-        //public void DBUser_ChangePassword(
+        public void DBUser_ChangePassword(FactoryArgs args, t_BigID UserID, t_String UserPassword)
+        {
+            _DALDBUser.ChangePassword(args, UserID, UserPassword);
+        }
 
     }
 }
