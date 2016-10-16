@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web;
 
-namespace LB.Web.MM.DAL
+namespace LB.Web.MI.DAL
 {
     public class DALDBItemBase
     {

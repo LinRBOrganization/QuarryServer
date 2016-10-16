@@ -4,10 +4,10 @@ using System.Data;
 using System.Web;
 using LB.Web.Contants.DBType;
 using LB.Web.Base.Helper;
-using LB.Web.MM.DAL;
+using LB.Web.MI.DAL;
 using LB.Web.Base.Factory;
 
-namespace LB.Web.MM.BLL
+namespace LB.Web.MI.BLL
 {
     public class BLLDBItemType : IBLLFunction
     {

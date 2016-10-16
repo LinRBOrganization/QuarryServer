@@ -104,9 +104,9 @@
       <Project>{e8d006c2-e1e4-4e51-b0bb-13e5edea8d41}</Project>
       <Name>LB.Web.DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LB.Web.MM\LB.Web.MM.csproj">
-      <Project>{f7da3d36-5f6e-4dce-8f9c-4e2b86f7cabb}</Project>
-      <Name>LB.Web.MM</Name>
+    <ProjectReference Include="..\LB.Web.MI\LB.Web.MI.csproj">
+      <Project>{6e0c112d-0df3-497f-9362-9d2a6c86a609}</Project>
+      <Name>LB.Web.MI</Name>
     </ProjectReference>
     <ProjectReference Include="..\LB.Web.RP\LB.Web.RP.csproj">
       <Project>{19efe986-652f-4d29-b66e-a598662f8f6a}</Project>
