@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using LB.Web.DB.BLL;
 using LB.Web.Base.Helper;
+using LB.Web.RP.BLL;
 
 namespace LB.Web.Project.Factory
 {
@@ -49,6 +50,11 @@ namespace LB.Web.Project.Factory
                 case 13201:
                 case 13202:
                     return new BLLDbBackUpConfig();
+
+                case 13300:
+                case 13301:
+                case 13302:
+                    return new BLLRPReceiveBillHeader();
             }
 
             return null;

@@ -108,6 +108,10 @@
       <Project>{f7da3d36-5f6e-4dce-8f9c-4e2b86f7cabb}</Project>
       <Name>LB.Web.MM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LB.Web.RP\LB.Web.RP.csproj">
+      <Project>{19efe986-652f-4d29-b66e-a598662f8f6a}</Project>
+      <Name>LB.Web.RP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LB.Web.SM\LB.Web.SM.csproj">
       <Project>{e88e8ad0-2ce4-4cdc-a04c-f6ce415553ce}</Project>
       <Name>LB.Web.SM</Name>
