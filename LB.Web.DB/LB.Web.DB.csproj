@@ -35,6 +35,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackUp\BackUpHelper.cs" />
     <Compile Include="BLL\BLLDbBackUpConfig.cs" />
     <Compile Include="BLL\BLLDbReportTemplate.cs" />
     <Compile Include="BLL\BLLDbSysLog.cs" />

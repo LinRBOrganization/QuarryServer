@@ -15,6 +15,7 @@ using LB.Web.Base.Factory;
 using LB.Web.Base.Helper;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using LB.Web.DB.BackUp;
 
 namespace LB.Web.Project
 {
@@ -44,6 +45,8 @@ namespace LB.Web.Project
             ErrorMsg = "";
             try
             {
+                SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+
                 DataTable dtParmValue = new DataTable("SPIN");
                 List<Dictionary<object, object>> lstDictValue = DeserializeObject(bSerializeValue) as  List<Dictionary<object, object>>;
                 Dictionary<object, object> dictDataType = DeserializeObject(bSerializeDataType) as Dictionary<object, object>;
@@ -65,7 +68,7 @@ namespace LB.Web.Project
                 dtParmValue.AcceptChanges();
 
                 DBHelper.Provider = new DBMSSQL();
-                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString);
+                SqlConnection con = new SqlConnection(SQLServerDAL.GetConnectionString);
                 string strDBName = con.Database;
                 DBMSSQL.InitSettings(5000, con.DataSource, strDBName, true, "", "");
                 con.Close();
@@ -282,9 +285,11 @@ namespace LB.Web.Project
             DataTable dtReturn = null;
             bolIsError = false;
             ErrorMsg = "";
-
+            BackUpHelper.StartBackUp(AppDomain.CurrentDomain.BaseDirectory);
             try
             {
+                SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+
                 DataTable dtView = SQLServerDAL.Query("select * from dbo.SysViewType where SysViewType=" + iViewType);
                 if (dtView.Rows.Count == 0)
                 {
@@ -331,6 +336,7 @@ from {1}
 
             try
             {
+                SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
                 dtReturn = SQLServerDAL.Query(strSQL);
                 dtReturn.TableName = "Result";
             }

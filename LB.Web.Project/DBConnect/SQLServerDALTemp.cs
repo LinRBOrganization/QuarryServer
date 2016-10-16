@@ -8,7 +8,7 @@ using System.Web;
 
 namespace LB.Web.Project.DBConnect
 {
-    public class SQLServerDAL
+    public class SQLServerDALTemp
     {
 
         //数据库连接字符串(web.config来配置)
@@ -21,7 +21,7 @@ namespace LB.Web.Project.DBConnect
                 return System.Configuration.ConfigurationManager.ConnectionStrings["DBConnectionString"].ToString(); 
             }
         }
-        public SQLServerDAL()
+        public SQLServerDALTemp()
         {
         }
 

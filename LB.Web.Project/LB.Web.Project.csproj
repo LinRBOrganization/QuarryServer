@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHelper.cs" />
-    <Compile Include="DBConnect\SQLServerDAL.cs" />
+    <Compile Include="DBConnect\SQLServerDALTemp.cs" />
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
