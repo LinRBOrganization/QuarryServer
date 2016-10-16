@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHelper.cs" />
-    <Compile Include="DBConnect\SQLServerDALTemp.cs" />
+    <Compile Include="DBConnect\SQLServerDAL.cs" />
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -103,10 +103,6 @@
     <ProjectReference Include="..\LB.Web.DB\LB.Web.DB.csproj">
       <Project>{e8d006c2-e1e4-4e51-b0bb-13e5edea8d41}</Project>
       <Name>LB.Web.DB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LB.Web.MM\LB.Web.MM.csproj">
-      <Project>{f7da3d36-5f6e-4dce-8f9c-4e2b86f7cabb}</Project>
-      <Name>LB.Web.MM</Name>
     </ProjectReference>
     <ProjectReference Include="..\LB.Web.SM\LB.Web.SM.csproj">
       <Project>{e88e8ad0-2ce4-4cdc-a04c-f6ce415553ce}</Project>
