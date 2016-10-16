@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LB.Web.DB", "LB.Web.DB\LB.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LB.Web.SM", "LB.Web.SM\LB.Web.SM.csproj", "{E88E8AD0-2CE4-4CDC-A04C-F6CE415553CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LB.Web.MM", "LB.Web.MM\LB.Web.MM.csproj", "{3FC4A6AE-50AB-4648-8F25-4E7170F9082C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LB.Web.DMM", "LB.Web.MM\LB.Web.DMM.csproj", "{3FC4A6AE-50AB-4648-8F25-4E7170F9082C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
