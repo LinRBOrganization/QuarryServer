@@ -41,10 +41,12 @@
     <Compile Include="Base\Helper\DBMSSQL.cs" />
     <Compile Include="Base\Helper\IBLLFunction.cs" />
     <Compile Include="Base\Helper\IDBBase.cs" />
+    <Compile Include="Base\Helper\LBConverter.cs" />
     <Compile Include="Base\Helper\LBDbParameter.cs" />
     <Compile Include="Base\Helper\LBDbParameterCollection.cs" />
     <Compile Include="Base\Helper\LBDbType.cs" />
     <Compile Include="Base\Helper\SettingValue.cs" />
+    <Compile Include="Base\Helper\SQLServerDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,8 @@ using LB.Web.Contants.DBType;
 using LB.Web.Base.Factory;
 using LB.Web.Base.Helper;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using LB.Web.DB.BackUp;
 
 namespace LB.Web.Project
 {
@@ -34,7 +36,7 @@ namespace LB.Web.Project
         }
 
         [WebMethod]
-        public DataSet RunProcedure(int ProcedureType,string strLoginName, DataTable dtParmValue,
+        public DataSet RunProcedure(int ProcedureType,string strLoginName, byte[] bSerializeValue, byte[] bSerializeDataType,
             out DataTable dtOut,out string ErrorMsg,out bool bolIsError)
         {
             dtOut = null;
@@ -43,8 +45,30 @@ namespace LB.Web.Project
             ErrorMsg = "";
             try
             {
+                SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+
+                DataTable dtParmValue = new DataTable("SPIN");
+                List<Dictionary<object, object>> lstDictValue = DeserializeObject(bSerializeValue) as  List<Dictionary<object, object>>;
+                Dictionary<object, object> dictDataType = DeserializeObject(bSerializeDataType) as Dictionary<object, object>;
+
+                foreach(KeyValuePair<object,object> keyvalue in dictDataType)
+                {
+                    dtParmValue.Columns.Add(keyvalue.Key.ToString(), GetType(keyvalue.Value.ToString()));
+                }
+
+                foreach(Dictionary<object, object> dictValue in lstDictValue)
+                {
+                    DataRow drNew = dtParmValue.NewRow();
+                    foreach(KeyValuePair<object, object> keyvalue in dictValue)
+                    {
+                        drNew[keyvalue.Key.ToString()] = keyvalue.Value;
+                    }
+                    dtParmValue.Rows.Add(drNew);
+                }
+                dtParmValue.AcceptChanges();
+
                 DBHelper.Provider = new DBMSSQL();
-                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString);
+                SqlConnection con = new SqlConnection(SQLServerDAL.GetConnectionString);
                 string strDBName = con.Database;
                 DBMSSQL.InitSettings(5000, con.DataSource, strDBName, true, "", "");
                 con.Close();
@@ -261,9 +285,11 @@ namespace LB.Web.Project
             DataTable dtReturn = null;
             bolIsError = false;
             ErrorMsg = "";
-
+            BackUpHelper.StartBackUp(AppDomain.CurrentDomain.BaseDirectory);
             try
             {
+                SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+
                 DataTable dtView = SQLServerDAL.Query("select * from dbo.SysViewType where SysViewType=" + iViewType);
                 if (dtView.Rows.Count == 0)
                 {
@@ -310,6 +336,7 @@ from {1}
 
             try
             {
+                SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
                 dtReturn = SQLServerDAL.Query(strSQL);
                 dtReturn.TableName = "Result";
             }
@@ -430,6 +457,33 @@ from {1}
                     fileStream.Close();
                 }
             }
+        }
+
+        //反序列化
+        public static object DeserializeObject(byte[] pBytes)
+        {
+            object newOjb = null;
+            if (pBytes == null)
+            {
+                return newOjb;
+            }
+
+            System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(pBytes);
+            memoryStream.Position = 0;
+            BinaryFormatter formatter = new BinaryFormatter();
+            newOjb = formatter.Deserialize(memoryStream);
+            memoryStream.Close();
+
+            return newOjb;
+        }
+
+        private static Type GetType(string strType)
+        {
+            if (strType.Contains("DataTable"))
+            {
+                return typeof(DataTable);
+            }
+            return Type.GetType(strType, true, true); ;
         }
     }
 }
