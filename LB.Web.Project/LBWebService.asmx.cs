@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Services;
-using LB.Web.Project.DBConnect;
 using LB.Web.Project.Factory;
 using System.Data.SqlClient;
 using System.Configuration;
