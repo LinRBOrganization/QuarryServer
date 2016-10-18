@@ -132,7 +132,7 @@ where ReceiveBillHeaderID = @ReceiveBillHeaderID
 
             string strSQL = @"
 update dbo.RPReceiveBillHeader
-set IsApprove = 0,
+set IsCancel = 0,
     CancelTime = null,
     CancelBy = ''
 where ReceiveBillHeaderID = @ReceiveBillHeaderID

@@ -54,6 +54,11 @@ namespace LB.Web.Project.Factory
                 case 13300:
                 case 13301:
                 case 13302:
+                case 13303:
+                case 13304:
+                case 13305:
+                case 13306:
+
                     return new BLLRPReceiveBillHeader();
             }
 

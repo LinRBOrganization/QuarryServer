@@ -32,6 +32,18 @@ namespace LB.Web.RP.BLL
                 case 13302:
                     strFunName = "Delete";
                     break;
+                case 13303:
+                    strFunName = "Approve";
+                    break;
+                case 13304:
+                    strFunName = "UnApprove";
+                    break;
+                case 13305:
+                    strFunName = "Cancel";
+                    break;
+                case 13306:
+                    strFunName = "UnCancel";
+                    break;
             }
             return strFunName;
         }
@@ -165,7 +177,7 @@ namespace LB.Web.RP.BLL
                     DataRow drHeader = dtHeader.Rows[0];
                     bool bolIsApprove = LBConverter.ToBoolean(drHeader["IsApprove"]);
                     bool bolIsCancel = LBConverter.ToBoolean(drHeader["IsCancel"]);
-                    if (bolIsApprove)
+                    if (!bolIsApprove)
                     {
                         throw new Exception("该充值单未审核，无法执行取消审核！");
                     }
@@ -221,7 +233,7 @@ namespace LB.Web.RP.BLL
                     {
                         throw new Exception("该充值单未审核，无法执行取消审核！");
                     }
-                    if (bolIsCancel)
+                    if (!bolIsCancel)
                     {
                         throw new Exception("该充值单已作废，无法执行取消审核！");
                     }
@@ -231,7 +243,7 @@ namespace LB.Web.RP.BLL
                     throw new Exception("该充值单已删除，无法执行取消审核！");
                 }
             }
-            _DALRPReceiveBillHeader.UnApprove(args, ReceiveBillHeaderID);
+            _DALRPReceiveBillHeader.UnCancel(args, ReceiveBillHeaderID);
         }
     }
 }
