@@ -62,6 +62,21 @@ namespace LB.Web.Project.Factory
 
                     return new BLLRPReceiveBillHeader();
 
+                case 20100:
+                case 20101:
+                case 20102:
+                    return new BLLDBItemType();
+
+                case 20200:
+                case 20201:
+                case 20202:
+                    return new BLLDBUOM();
+
+                case 20300:
+                case 20301:
+                case 20302:
+                    return new BLLDBItemBase();
+
                 case 13400:
                 case 13401:
                 case 13402:
