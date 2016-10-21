@@ -4,6 +4,7 @@ using System.Web;
 using LB.Web.DB.BLL;
 using LB.Web.Base.Helper;
 using LB.Web.RP.BLL;
+using LB.Web.MI.BLL;
 
 namespace LB.Web.Project.Factory
 {
@@ -60,6 +61,21 @@ namespace LB.Web.Project.Factory
                 case 13306:
 
                     return new BLLRPReceiveBillHeader();
+
+                case 20100:
+                case 20101:
+                case 20102:
+                    return new BLLDBItemType();
+
+                case 20200:
+                case 20201:
+                case 20202:
+                    return new BLLDBUOM();
+
+                case 20300:
+                case 20301:
+                case 20302:
+                    return new BLLDBItemBase();
             }
 
             return null;
