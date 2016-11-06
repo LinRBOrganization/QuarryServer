@@ -5,6 +5,7 @@ using LB.Web.DB.BLL;
 using LB.Web.Base.Helper;
 using LB.Web.RP.BLL;
 using LB.Web.MI.BLL;
+using LB.Web.SM.BLL;
 
 namespace LB.Web.Project.Factory
 {
@@ -52,16 +53,6 @@ namespace LB.Web.Project.Factory
                 case 13202:
                     return new BLLDbBackUpConfig();
 
-                case 13300:
-                case 13301:
-                case 13302:
-                case 13303:
-                case 13304:
-                case 13305:
-                case 13306:
-
-                    return new BLLRPReceiveBillHeader();
-
                 case 20100:
                 case 20101:
                 case 20102:
@@ -77,6 +68,15 @@ namespace LB.Web.Project.Factory
                 case 20302:
                     return new BLLDBItemBase();
 
+                case 13300:
+                case 13301:
+                case 13302:
+                case 13303:
+                case 13304:
+                case 13305:
+                case 13306:
+                    return new BLLRPReceiveBillHeader();
+
                 case 13400:
                 case 13401:
                 case 13402:
@@ -85,6 +85,21 @@ namespace LB.Web.Project.Factory
                 case 13501:
                 case 13502:
                     return new BLLDbCar();
+
+                case 13600:
+                case 13601:
+                case 13602:
+                case 13603:
+                case 13604:
+                case 13605:
+                case 13606:
+                case 13607:
+                    return new BLLModifyBillHeader();
+
+                case 13700:
+                case 13701:
+                case 13702:
+                    return new BLLModifyBillDetail();
             }
 
             return null;
