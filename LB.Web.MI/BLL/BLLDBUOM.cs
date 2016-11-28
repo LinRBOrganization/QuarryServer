@@ -48,9 +48,9 @@ namespace LB.Web.MI.BLL
             _DALDBUOM.Update(args, UOMID, UOMName, UOMType);
         }
 
-        public void DBUOM_Delete(FactoryArgs args, t_BigID ItemID)
+        public void DBUOM_Delete(FactoryArgs args, t_BigID UOMID)
         {
-            _DALDBUOM.Delete(args, ItemID);
+            _DALDBUOM.Delete(args, UOMID);
         }
     }
 }
