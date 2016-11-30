@@ -49,6 +49,9 @@ namespace LB.Web.SM.BLL
                 case 13607:
                     strFunName = "GetCustomerLastItemPrice";
                     break;
+                case 13608:
+                    strFunName = "GetCustomerItemPrice";
+                    break;
             }
             return strFunName;
         }
@@ -368,8 +371,9 @@ namespace LB.Web.SM.BLL
                 {
                     long lItemID = LBConverter.ToInt64(dr["ItemID"]);
                     long lCarID = LBConverter.ToInt64(dr["CarID"]);
+                    int iCalculateType = LBConverter.ToInt32(dr["CalculateType"]);
 
-                    string strKey = lItemID.ToString() + "-" + lCarID.ToString();//唯一标识的主键
+                    string strKey = lItemID.ToString() + "-" + lCarID.ToString()+"-"+ iCalculateType.ToString();//唯一标识的主键
                     if (!dictResult.ContainsKey(strKey))
                     {
                         dictResult.Add(strKey, dr);
@@ -378,7 +382,7 @@ namespace LB.Web.SM.BLL
                     {
                         DateTime dtEffectDate = Convert.ToDateTime(dr["EffectDate"]);
                         DateTime dtNow = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
-                        if (dtEffectDate.Subtract(dtNow).TotalDays < 0)//调价生效日期比当前日期前，则生效
+                        if (dtEffectDate.Subtract(dtNow).TotalDays <= 0)//调价生效日期比当前日期前，则生效
                         {
                             DataRow drValue = dictResult[strKey];
                             DateTime dtCurEffectDate = Convert.ToDateTime(drValue["EffectDate"]);
@@ -407,6 +411,65 @@ namespace LB.Web.SM.BLL
                 }
             }
             args.SelectResult = dtResult;
+        }
+
+        /// <summary>
+        /// 读取物料报价
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="ItemID"></param>
+        /// <param name="CarID"></param>
+        /// <param name="CalculateType"></param>
+        /// <param name="Price"></param>
+        public void GetCustomerItemPrice(FactoryArgs args,t_BigID ItemID,t_BigID CarID,t_ID CalculateType,out t_Decimal Price)
+        {
+            Price = new t_Decimal();
+            DataTable dtResult;
+            Dictionary<string, DataRow> dictResult = new Dictionary<string, DataRow>();
+            using (DataTable dtModify = _DALModifyBillHeader.GetCarItemPrice(args, ItemID, CarID, CalculateType))
+            {
+                dtResult = dtModify.Clone();
+                foreach (DataRow dr in dtModify.Rows)
+                {
+                    long lItemID = LBConverter.ToInt64(dr["ItemID"]);
+                    long lCarID = LBConverter.ToInt64(dr["CarID"]);
+                    int iCalculateType = LBConverter.ToInt32(dr["CalculateType"]);
+
+                    string strKey = lItemID.ToString() + "-" + lCarID.ToString() + "-" + iCalculateType.ToString();//唯一标识的主键
+                    if (!dictResult.ContainsKey(strKey))
+                    {
+                        dictResult.Add(strKey, dr);
+                        Price.SetValueWithObject(dr["Price"]);
+                    }
+                    else
+                    {
+                        DateTime dtEffectDate = Convert.ToDateTime(dr["EffectDate"]);
+                        DateTime dtNow = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+                        if (dtEffectDate.Subtract(dtNow).TotalDays <= 0)//调价生效日期比当前日期前，则生效
+                        {
+                            DataRow drValue = dictResult[strKey];
+                            DateTime dtCurEffectDate = Convert.ToDateTime(drValue["EffectDate"]);
+
+                            double dDiffDays = dtEffectDate.Subtract(dtCurEffectDate).TotalDays;//日期对比
+                            if (dDiffDays > 0)//有更加新的生效日期，则将最新的记录替换旧的记录
+                            {
+                                Price.SetValueWithObject(dr["Price"]);
+                                dictResult[strKey] = dr;
+                            }
+                            else if (dDiffDays == 0)//如果两个日期一样，则对比审核时间，优先考虑最近的审核时间
+                            {
+                                DateTime dtApproveTime = Convert.ToDateTime(dr["ApproveTime"]);
+                                DateTime dtCurApproveTime = Convert.ToDateTime(drValue["ApproveTime"]);
+                                if (dtApproveTime.Subtract(dtCurApproveTime).TotalSeconds > 0)
+                                {
+                                    dictResult[strKey] = dr;
+                                    Price.SetValueWithObject(dr["Price"]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -37,8 +37,10 @@
   <ItemGroup>
     <Compile Include="BLL\BLLModifyBillDetail.cs" />
     <Compile Include="BLL\BLLModifyBillHeader.cs" />
+    <Compile Include="BLL\BLLSaleCarInOutBill.cs" />
     <Compile Include="DAL\DALModifyBillDetail.cs" />
     <Compile Include="DAL\DALModifyBillHeader.cs" />
+    <Compile Include="DAL\DALSaleCarInOutBill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

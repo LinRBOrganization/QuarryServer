@@ -51,5 +51,6 @@ namespace LB.Web.SM.BLL
         {
             _DALModifyBillDetail.Delete(args, ModifyBillDetailID);
         }
+
     }
 }

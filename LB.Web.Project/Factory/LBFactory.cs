@@ -94,12 +94,29 @@ namespace LB.Web.Project.Factory
                 case 13605:
                 case 13606:
                 case 13607:
+                case 13608:
                     return new BLLModifyBillHeader();
 
                 case 13700:
                 case 13701:
                 case 13702:
                     return new BLLModifyBillDetail();
+
+                case 13800:
+                    return new BLLDbWeightDeviceUserType();
+
+                case 13900:
+                    return new BLLDbCameraConfig();
+
+                case 14000:
+                case 14001:
+                    return new BLLDbDescription();
+
+                case 14100:
+                    return new BLLSaleCarInOutBill();
+
+                case 14200:
+                    return new BLLDbWeightType();
             }
 
             return null;

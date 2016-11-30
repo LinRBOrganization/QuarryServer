@@ -36,6 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackUp\BackUpHelper.cs" />
+    <Compile Include="BLL\BLLDbCameraConfig.cs" />
+    <Compile Include="BLL\BLLDbWeightType.cs" />
+    <Compile Include="BLL\BLLDbDescription.cs" />
+    <Compile Include="BLL\BLLDbWeightDeviceUserType.cs" />
     <Compile Include="BLL\BLLDbBackUpConfig.cs" />
     <Compile Include="BLL\BLLDbReportTemplate.cs" />
     <Compile Include="BLL\BLLDbSysLog.cs" />
@@ -43,6 +47,10 @@
     <Compile Include="BLL\BLLPermission.cs" />
     <Compile Include="BLL\BLLSysViewType.cs" />
     <Compile Include="BLL\BLLUserPermission.cs" />
+    <Compile Include="DAL\DALDbWeightType.cs" />
+    <Compile Include="DAL\DALDbDescription.cs" />
+    <Compile Include="DAL\DALDbCameraConfig.cs" />
+    <Compile Include="DAL\DALDbWeightDeviceUserType.cs" />
     <Compile Include="DAL\DALDbBackUpConfig.cs" />
     <Compile Include="DAL\DALDbReportTemplate.cs" />
     <Compile Include="DAL\DALDbSysLog.cs" />

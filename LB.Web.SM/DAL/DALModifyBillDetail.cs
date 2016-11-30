@@ -34,7 +34,7 @@ insert into dbo.ModifyBillDetail(ModifyBillHeaderID, ItemID, CarID, Price, Calcu
 values( @ModifyBillHeaderID, @ItemID, @CarID, @Price, @CalculateType, @UOMID, 
     @Description, @CreateBy, @CreateTime, @ChangeBy, @ChangeTime)
 
-set @ModifyBillHeaderID = @@identity
+set @ModifyBillDetailID = @@identity
 ";
             DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);
             ModifyBillDetailID.Value = Convert.ToInt64(parms["ModifyBillDetailID"].Value);
@@ -89,7 +89,7 @@ where ModifyBillDetailID = @ModifyBillDetailID
             parms.Add(new LBDbParameter("ModifyBillDetailID", ModifyBillDetailID));
 
             string strSQL = @"
-delete dbo.ModifyBillDelete
+delete dbo.ModifyBillDetail
 where ModifyBillDetailID = @ModifyBillDetailID
 ";
             DBHelper.ExecuteNonQuery(args, System.Data.CommandType.Text, strSQL, parms, false);

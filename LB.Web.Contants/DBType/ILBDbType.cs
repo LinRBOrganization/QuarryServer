@@ -153,7 +153,7 @@ namespace LB.Web.Contants.DBType
                 case LBDBType.t_nText:
                     return 5;
                 default:
-                    return 2000;
+                    return int.MaxValue;
             }
         }
 

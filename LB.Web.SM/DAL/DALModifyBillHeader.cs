@@ -249,19 +249,55 @@ order by ModifyBillCode desc
 
         public DataTable GetModifyBillHeaderByCustomer(FactoryArgs args,t_BigID CustomerID)
         {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("CustomerID", CustomerID));
             string strSQL = @"
-select *
-from dbo.ModifyBillHeader h
-    inner join dbo.ModifyBillDetail d on
-        h.ModifyBillHeaderID = d.ModifyBillHeaderID
-    inner join dbo.DbItemBase b on
-        b.ItemID = d.ItemID
-    inner join dbo.DbCustomer c on
-        c.CustomerID = h.CustomerID
-where h.IsApprove=1 and isnull(IsCancel,0)=0 and EffectDate>=getdate()
-order by ApproveTime desc
+SELECT     h.CustomerID, c.CustomerName,h.EffectDate,h.ApproveTime,
+                       d.ModifyBillDetailID, d.ItemID,i.ItemCode,i.ItemRate,i.ItemMode ,i.ItemName, 
+                      d.CarID, ca.CarNum, d.Price, d.CalculateType,
+                          (SELECT     ConstText
+                            FROM          dbo.DbSystemConst
+                            WHERE      (FieldName = 'CalculateType') AND (ConstValue = d.CalculateType)) AS CalculateTypeName, d.UOMID, u.UOMName
+FROM         dbo.ModifyBillHeader AS h INNER JOIN
+                      dbo.ModifyBillDetail AS d ON h.ModifyBillHeaderID = d.ModifyBillHeaderID INNER JOIN
+                      dbo.DbCustomer AS c ON c.CustomerID = h.CustomerID INNER JOIN
+                      dbo.DbItemBase AS i ON i.ItemID = d.ItemID INNER JOIN
+                      dbo.DbUOM AS u ON u.UOMID = d.UOMID LEFT OUTER JOIN
+                      dbo.DbCar AS ca ON ca.CarID = d.CarID
+where h.CustomerID = @CustomerID and h.IsApprove=1 and isnull(h.IsCancel,0)=0 and h.EffectDate<=CONVERT(varchar(12) , getdate(), 111 )
+order by h.ApproveTime desc
 ";
-            return DBHelper.ExecuteQuery(args, strSQL);
+            return DBHelper.ExecuteQuery(args, strSQL,parms);
+        }
+
+        public DataTable GetCarItemPrice(FactoryArgs args, t_BigID ItemID,t_BigID CarID, t_ID CalculateType)
+        {
+            LBDbParameterCollection parms = new LBDbParameterCollection();
+            parms.Add(new LBDbParameter("CarID", CarID));
+            parms.Add(new LBDbParameter("ItemID", ItemID));
+            parms.Add(new LBDbParameter("CalculateType", CalculateType));
+            string strSQL = @"
+SELECT     h.CustomerID, c.CustomerName,h.EffectDate,h.ApproveTime,
+                       d.ModifyBillDetailID, d.ItemID,i.ItemCode,i.ItemRate,i.ItemMode ,i.ItemName, 
+                      d.CarID, ca.CarNum, d.Price, d.CalculateType,
+                          (SELECT     ConstText
+                            FROM          dbo.DbSystemConst
+                            WHERE      (FieldName = 'CalculateType') AND (ConstValue = d.CalculateType)) AS CalculateTypeName, d.UOMID, u.UOMName
+FROM         dbo.ModifyBillHeader AS h INNER JOIN
+                      dbo.ModifyBillDetail AS d ON h.ModifyBillHeaderID = d.ModifyBillHeaderID INNER JOIN
+                      dbo.DbCustomer AS c ON c.CustomerID = h.CustomerID INNER JOIN
+                      dbo.DbItemBase AS i ON i.ItemID = d.ItemID INNER JOIN
+                      dbo.DbUOM AS u ON u.UOMID = d.UOMID LEFT OUTER JOIN
+                      dbo.DbCar AS ca ON ca.CarID = d.CarID
+where d.CarID = @CarID and 
+    d.ItemID = @ItemID and 
+    d.CalculateType = @CalculateType and 
+    h.IsApprove=1 and 
+    isnull(h.IsCancel,0)=0 and 
+    h.EffectDate<=CONVERT(varchar(12) , getdate(), 111 )
+order by h.ApproveTime desc
+";
+            return DBHelper.ExecuteQuery(args, strSQL, parms);
         }
     }
 }

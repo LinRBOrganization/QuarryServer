@@ -45,6 +45,7 @@
     <Compile Include="Base\Helper\LBDbParameter.cs" />
     <Compile Include="Base\Helper\LBDbParameterCollection.cs" />
     <Compile Include="Base\Helper\LBDbType.cs" />
+    <Compile Include="Base\Helper\LogHelper.cs" />
     <Compile Include="Base\Helper\SettingValue.cs" />
     <Compile Include="Base\Helper\SQLServerDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

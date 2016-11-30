@@ -15,6 +15,7 @@ using LB.Web.Base.Helper;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using LB.Web.DB.BackUp;
+using LB.Web.Base.Base.Helper;
 
 namespace LB.Web.Project
 {
@@ -285,16 +286,21 @@ namespace LB.Web.Project
             bolIsError = false;
             ErrorMsg = "";
             BackUpHelper.StartBackUp(AppDomain.CurrentDomain.BaseDirectory);
+            //LogHelper.WriteLog("正在调用" + iViewType.ToString());
             try
             {
                 SQLServerDAL.GetConnectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
-
+                //LogHelper.WriteLog(SQLServerDAL.GetConnectionString);
                 DataTable dtView = SQLServerDAL.Query("select * from dbo.SysViewType where SysViewType=" + iViewType);
+                //LogHelper.WriteLog("查询语句成功！");
                 if (dtView.Rows.Count == 0)
                 {
+                    LogHelper.WriteLog("查询出错！视图号：【" + iViewType + "】不存在！");
                     throw new Exception("查询出错！视图号：【" + iViewType+"】不存在！");
                 }
+                //LogHelper.WriteLog("SysViewName");
                 string strSysViewName = dtView.Rows[0]["SysViewName"].ToString().TrimEnd();
+                //LogHelper.WriteLog(strSysViewName);
                 DataTable dtViewExists = SQLServerDAL.Query(@"
 select * from sysobjects 
 where id = object_id(N'["+strSysViewName+@"]')
@@ -305,6 +311,7 @@ where id = object_id(N'["+strSysViewName+@"]')
                 }
 
                 string strFields = string.IsNullOrEmpty(strFieldNames) ? "*" : strFieldNames;
+                //LogHelper.WriteLog(strFields);
                 strWhere =  string.IsNullOrEmpty(strWhere)?"":"where "+strWhere;
                 strOrderBy =  string.IsNullOrEmpty(strOrderBy)?"":"Order By "+strOrderBy;
                 string strSQL = @"
@@ -313,6 +320,7 @@ from {1}
 {2}
 {3}
 ";
+                //LogHelper.WriteLog(strSQL);
                 strSQL = string.Format(strSQL, strFields, strSysViewName, strWhere, strOrderBy);
                 dtReturn = SQLServerDAL.Query(strSQL);
                 dtReturn.TableName = "Result";
@@ -320,6 +328,7 @@ from {1}
             catch (Exception ex)
             {
                 ErrorMsg = ex.InnerException.Message;
+                //LogHelper.WriteLog(ErrorMsg);
                 bolIsError = true;
             }
             return dtReturn;
