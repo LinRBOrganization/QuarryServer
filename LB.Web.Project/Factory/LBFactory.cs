@@ -113,6 +113,8 @@ namespace LB.Web.Project.Factory
                     return new BLLDbDescription();
 
                 case 14100:
+                case 14101:
+                case 14102:
                     return new BLLSaleCarInOutBill();
 
                 case 14200:
